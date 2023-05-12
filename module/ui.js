@@ -1,5 +1,6 @@
 import cart from "./cart.js";
 
+// Display on product
 function displayProduct(product) {
     // Set img
     let sp = document.createElement("span")
@@ -11,10 +12,8 @@ function displayProduct(product) {
 
     // Add event to add to cart
     a.addEventListener('click', (e) => {
-        const ref = e.target.parentNode.parentNode.lastElementChildChild.firstElementChildChild.firstElementChildChild.innerText
-        const desc = e.target.parentNode.parentNode.lastElementChildChild.lastElementChild.innerText
-
-        cart.addToCart(e.target.parentNode.parentNode)
+        cart.addToCart(product)
+        displayCart()
     })
 
     sp = document.createElement("SPAN")
@@ -33,7 +32,6 @@ function displayProduct(product) {
     let strong = document.createElement("strong")
     strong.className = "bigger"
     strong.innerText = product.ref
-
 
 
     divTop.appendChild(strong)
@@ -60,6 +58,28 @@ function displayProduct(product) {
     return productDiv
 }
 
+//Display the cart
+function displayCart(){
+    const sum = ( acc, elem ) => acc + elem ;
+
+    const cartHTML = document.getElementById("cart-content")
+    cartHTML.innerHTML = cart.cart.map(item => {
+        const ref = item.product.ref
+        const desc = item.product.description
+        const price =item.product.price
+        return  "<tr>\n" +
+            `\t<td data-type=\"ref\">${ref}</td>\n` +
+            `\t<td data-type=\"qte\">${desc}</td>\n` +
+            `\t<td data-type=\"amount\">${price}€</td>\n` +
+            "</tr>"
+    }).reduce(sum, "")
+
+
+    const cartTotal = document.getElementById("cart-footer")
+    cartTotal.innerHTML = `<strong class="bigger">Total :&nbsp;</strong>` +
+                            `<span  class="bigger" id="cart-total">${cart.genericCalc(( acc, elem ) => acc + (elem.product.price * elem.quantite))}€</span>`
+}
+
 export default {
     buildProductsList: listProduct => {
         // Cleaning product
@@ -71,5 +91,8 @@ export default {
             const div = displayProduct(product)
             listProd.appendChild(div)
         })
+
+        // Display cart
+        displayCart()
     }
 }

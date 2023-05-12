@@ -23,8 +23,6 @@ export default {
     search: (string) => {
         const res = []
         productList.forEach(item => {
-            console.log(item)
-            console.log(string)
             console.log((item.ref).indexOf(string))
             if (item.ref.indexOf(string) !== -1 || item.description.indexOf(string) !== -1 ){
                 res.push(item)

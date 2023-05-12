@@ -9,6 +9,7 @@ class InCart{
 
 const cart = []
 export default {
+    cart: cart,
     addToCart: (prod) => {
         let exist = false
         cart.forEach(item => {
@@ -22,5 +23,10 @@ export default {
             const item = new InCart(prod, 1)
             cart.push(item)
         }
+
+        console.log(cart)
+    },
+    genericCalc:(callback) => {
+        return cart.reduce(callback, 0)
     }
 }
